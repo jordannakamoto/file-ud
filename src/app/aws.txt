@@ -1,0 +1,56 @@
+import React from 'react';
+import Dropzone from 'react-dropzone';
+import AWS from 'aws-sdk';
+
+// Configure the AWS region and credentials
+const S3_BUCKET = 'your-bucket-name';
+const REGION = 'your-region';
+
+AWS.config.update({
+  accessKeyId: 'YOUR_ACCESS_KEY_ID',
+  secretAccessKey: 'YOUR_SECRET_ACCESS_KEY'
+});
+
+const myBucket = new AWS.S3({
+  params: { Bucket: S3_BUCKET },
+  region: REGION,
+});
+
+export default function Home() {
+  const handleFileDrop = (acceptedFiles) => {
+    acceptedFiles.forEach(file => uploadFileToS3(file));
+  };
+
+  const uploadFileToS3 = (file) => {
+    const params = {
+      ACL: 'public-read', // or another ACL according to your requirements
+      Body: file,
+      Bucket: S3_BUCKET,
+      Key: file.name,
+    };
+
+    myBucket.putObject(params)
+      .on('httpUploadProgress', (evt) => {
+        console.log(`Uploaded: ${evt.loaded} / ${evt.total}`);
+      })
+      .send((err, data) => {
+        if (err) console.log('Error', err);
+        if (data) console.log('Success', data);
+      });
+  };
+
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between">
+      <Dropzone onDrop={handleFileDrop}>
+        {({ getRootProps, getInputProps }) => (
+          <section>
+            <div {...getRootProps()}>
+              <input {...getInputProps()} />
+              {/* UI Elements for drag & drop */}
+            </div>
+          </section>
+        )}
+      </Dropzone>
+    </main>
+  );
+}

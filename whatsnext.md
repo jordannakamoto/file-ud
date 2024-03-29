@@ -1,0 +1,1 @@
+Setup S3 Bucket for upload/download CORS

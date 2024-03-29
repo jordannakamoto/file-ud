@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "^18",
+    "aws-sdk": "^2.1588.0",
+    "global": "^4.4.0",
+    "next": "14.1.4",
+    "react": "^18.2.0",
     "react-dom": "^18",
-    "next": "14.1.4"
+    "react-dropzone": "^14.2.3",
+    "reactflow": "^11.10.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
