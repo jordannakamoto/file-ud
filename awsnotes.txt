@@ -1,0 +1,19 @@
+// on your client
+const formData = new FormData()
+formData.append('image', <File object of an Image>)
+
+// your upload api
+const formData = await request.formData();
+const file = await formData.get('image').arrayBuffer()
+// After converting file to buffer
+// You can pass it on to your S3 Client
+S3.putObject({
+      Body: file,
+      Bucket: process.env.AWS_BUCKER_FOLDER,
+      Key: path,
+    }, function(err, data) {
+      if (err) {
+        reject(err)
+      }
+      resolve(data)
+    })

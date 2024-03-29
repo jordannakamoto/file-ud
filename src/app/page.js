@@ -7,9 +7,17 @@ import React from 'react'
 
 export default function Home() {
   const handleFileDrop = (acceptedFiles) => {
-    console.log(acceptedFiles);
-    // Perform file operations here
-    // For example, uploading to a server, reading the file contents, etc.
+    const file = acceptedFiles[0]; // Assuming single file upload
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error uploading the file:', error));
   };
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
